@@ -29,7 +29,8 @@ Route::group(['prefix'=>'products'], function(){
    
 });
 
+// Route::group(['prefix'=>'products']->middleware('auth:api'), function(){
+// // Route::group(['middleware' => ['AdminLogin']], function(){
 
-// Route::group(['middleware' => ['AdminLogin']], function(){
-
+    
 // });

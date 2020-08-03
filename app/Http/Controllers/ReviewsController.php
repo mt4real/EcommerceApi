@@ -20,6 +20,13 @@ class ReviewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+       public function __construct()
+    {
+        $this->middleware('auth:api')->except('index','show');
+    }
+
+
     public function index(Product $product)
     {
         //return Reviews::all();
@@ -46,12 +53,12 @@ class ReviewsController extends Controller
     public function store(ReviewRequest $request, Product $product)
     {
         
-        $review_request=new Reviews($request->all());
+        $review=new Reviews($request->all());
 
-        $product->reviews()->save($review_request);
+        $product->reviews()->save($review);
 
         return response([
-          'data' => new ReviewResource($review_request)
+          'data' => new ReviewResource($review)
 
         ], Response::HTTP_CREATED);
 
@@ -86,19 +93,29 @@ class ReviewsController extends Controller
      * @param  \App\Model\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Reviews $reviews)
+    public function update(Request $request, Product $product, Reviews $review)
     {
-        //
+        
+         $review->update($request->all());
+
+                return response([
+          'data' => new ReviewResource($review)
+
+        ], Response::HTTP_CREATED);
+
     }
 
-    /**
+    /** 
      * Remove the specified resource from storage.
      *
      * @param  \App\Model\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reviews $reviews)
+    public function destroy(Product $product, Reviews $review)
     {
-        //
+        $review->delete();
+
+             return response(null, Response::HTTP_NO_CONTENT);
+
     }
 }
